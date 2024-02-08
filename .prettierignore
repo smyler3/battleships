@@ -1,0 +1,15 @@
+# Ignore dist folder
+dist/
+
+# Ignore .git folder
+.git/
+
+# Ignore node_modules
+node_modules/
+
+# Ignore npm-related files
+package-lock.json
+package.json
+
+# Ignore webpack files
+webpack.*
