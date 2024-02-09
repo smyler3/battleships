@@ -1,12 +1,12 @@
 import { createGameboard } from "../gameboard";
 
-describe("Gameboard Testing", () => {
-    let board = null;
+let board = null;
 
-    beforeEach(() => {
-        board = createGameboard();
-    });
+beforeEach(() => {
+    board = createGameboard();
+});
 
+describe("Addding_ships_to_gameboard", () => {
     test("Create_a_gameboard", () => {
         expect(board).toHaveProperty("placeShip");
         expect(typeof board.placeShip).toBe("function");
@@ -148,3 +148,5 @@ describe("Gameboard Testing", () => {
             ).toBe(false);
     });
 });
+
+describe("Attacking_spaces_on_the_board", () => {});
