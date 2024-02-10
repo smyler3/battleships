@@ -6,6 +6,7 @@ describe("Ship_creation", () => {
 
         expect(ship).toHaveProperty("hit");
         expect(typeof ship.hit).toBe("function");
+
         expect(ship).toHaveProperty("isSunk");
         expect(typeof ship.isSunk).toBe("function");
     });
@@ -15,6 +16,7 @@ describe("Ship_creation", () => {
 
         expect(ship).toHaveProperty("hit");
         expect(typeof ship.hit).toBe("function");
+
         expect(ship).toHaveProperty("isSunk");
         expect(typeof ship.isSunk).toBe("function");
     });
@@ -41,8 +43,10 @@ describe("Ship_attacks", () => {
         const ship = createShip(2);
 
         expect(ship.isSunk()).toBe(false);
+
         ship.hit();
         expect(ship.isSunk()).toBe(false);
+
         ship.hit();
         expect(ship.isSunk()).toBe(true);
     });
