@@ -5,9 +5,9 @@ const createGameboard = () => {
     const BOARD_WIDTH = 10;
 
     const tiles = {
-        WATER: null,
-        MISS: false,
-        HIT: true,
+        WATER: "W",
+        MISS: "M",
+        HIT: "H",
     };
 
     const allowedLengths = [
@@ -28,7 +28,7 @@ const createGameboard = () => {
         // Ship placed off the board
         if (
             [startx, starty, endx, endy].some(
-                (coord) => coord < 0 || coord > BOARD_WIDTH - 1,
+                (coord) => coord < 0 || coord >= BOARD_WIDTH,
             )
         ) {
             return false;
@@ -57,12 +57,12 @@ const createGameboard = () => {
         placeShip([[startx, starty], [endx, endy]]) {
             // Max ships already placed
             if (placedShips.length >= MAX_SHIPS) {
-                return false;
+                throw new Error("Ship capacity reached");
             }
 
             // Invalid coordinates
             if (!isValidCoords(startx, starty, endx, endy)) {
-                return false;
+                throw new Error("Invalid coordinates");
             }
 
             const shipLength =
@@ -71,8 +71,8 @@ const createGameboard = () => {
             // Check ship length validity
             const obj = allowedLengths.find((obj) => obj.number === shipLength);
 
-            if (obj.remaining <= 0) {
-                return false;
+            if (obj === undefined || obj.remaining <= 0) {
+                throw new Error("Invalid ship length");
             }
 
             try {
@@ -95,7 +95,31 @@ const createGameboard = () => {
             }
         },
 
-        receiveAttack() {},
+        receiveAttack([x, y]) {
+            if ([x, y].some((coord) => coord < 0 || coord >= BOARD_WIDTH)) {
+                throw new Error("Invalid coordinates");
+            }
+
+            const square = grid[x][y];
+
+            // Duplicate attack
+            if (square === tiles.MISS || square === tiles.HIT) {
+                throw new Error("Already attacked this square");
+            }
+
+            // Miss
+            if (square === tiles.WATER) {
+                grid[x][y] = tiles.MISS;
+
+                return false;
+            }
+
+            // Hit
+            placedShips[square].hit();
+            grid[x][y] = tiles.HIT;
+
+            return true;
+        },
 
         isFleetSunk() {},
     };
