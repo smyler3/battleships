@@ -3,17 +3,21 @@ import { createGameboard } from "../gameboard";
 let board = null;
 
 beforeEach(() => {
+    // Generate the board
     board = createGameboard();
 });
 
 describe("Addding_ships_to_gameboard", () => {
     test("Create_a_gameboard", () => {
+        // Has placeShip function
         expect(board).toHaveProperty("placeShip");
         expect(typeof board.placeShip).toBe("function");
 
+        // Has receiveAttack function
         expect(board).toHaveProperty("receiveAttack");
         expect(typeof board.receiveAttack).toBe("function");
 
+        // Has isFleetSunk function
         expect(board).toHaveProperty("isFleetSunk");
         expect(typeof board.isFleetSunk).toBe("function");
     });
@@ -220,5 +224,115 @@ describe("Attacking_spaces_on_the_board", () => {
         expect(() => board.receiveAttack([-1, 0])).toThrow(
             "Invalid coordinates",
         );
+    });
+});
+
+describe("Check_fleet_sunk", () => {
+    test("Fleet_is_sunk_one_ship", () => {
+        // Place a ship on the board
+        board.placeShip([
+            [0, 0],
+            [1, 0],
+        ]);
+
+        // Sink the ship
+        board.receiveAttack([0, 0]);
+        board.receiveAttack([1, 0]);
+        expect(board.isFleetSunk()).toBe(true);
+    });
+
+    test("Fleet_is_sunk_all_ships", () => {
+        // Place fleet on the board
+        board.placeShip([
+            [0, 0],
+            [4, 0],
+        ]);
+        board.placeShip([
+            [0, 1],
+            [3, 1],
+        ]);
+        board.placeShip([
+            [0, 2],
+            [2, 2],
+        ]);
+        board.placeShip([
+            [0, 3],
+            [2, 3],
+        ]);
+        board.placeShip([
+            [0, 4],
+            [1, 4],
+        ]);
+
+        // Sink the whole fleet
+        board.receiveAttack([0, 0]);
+        board.receiveAttack([1, 0]);
+        board.receiveAttack([2, 0]);
+        board.receiveAttack([3, 0]);
+        board.receiveAttack([4, 0]);
+
+        board.receiveAttack([0, 1]);
+        board.receiveAttack([1, 1]);
+        board.receiveAttack([2, 1]);
+        board.receiveAttack([3, 1]);
+
+        board.receiveAttack([0, 2]);
+        board.receiveAttack([1, 2]);
+        board.receiveAttack([2, 2]);
+
+        board.receiveAttack([0, 3]);
+        board.receiveAttack([1, 3]);
+        board.receiveAttack([2, 3]);
+
+        board.receiveAttack([0, 4]);
+        board.receiveAttack([1, 4]);
+
+        expect(board.isFleetSunk()).toBe(true);
+    });
+
+    test("Fleet_is_not_all_sunk", () => {
+        // Place fleet on the board
+        board.placeShip([
+            [0, 0],
+            [4, 0],
+        ]);
+        board.placeShip([
+            [0, 1],
+            [3, 1],
+        ]);
+        board.placeShip([
+            [0, 2],
+            [2, 2],
+        ]);
+        board.placeShip([
+            [0, 3],
+            [2, 3],
+        ]);
+        board.placeShip([
+            [0, 4],
+            [1, 4],
+        ]);
+
+        // Sink 4 of the ships
+        board.receiveAttack([0, 0]);
+        board.receiveAttack([1, 0]);
+        board.receiveAttack([2, 0]);
+        board.receiveAttack([3, 0]);
+        board.receiveAttack([4, 0]);
+
+        board.receiveAttack([0, 1]);
+        board.receiveAttack([1, 1]);
+        board.receiveAttack([2, 1]);
+        board.receiveAttack([3, 1]);
+
+        board.receiveAttack([0, 2]);
+        board.receiveAttack([1, 2]);
+        board.receiveAttack([2, 2]);
+
+        board.receiveAttack([0, 3]);
+        board.receiveAttack([1, 3]);
+        board.receiveAttack([2, 3]);
+
+        expect(board.isFleetSunk()).toBe(false);
     });
 });

@@ -121,7 +121,9 @@ const createGameboard = () => {
             return true;
         },
 
-        isFleetSunk() {},
+        isFleetSunk() {
+            return placedShips.every((ship) => ship.isSunk());
+        },
     };
 };
 
