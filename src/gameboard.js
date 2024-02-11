@@ -1,8 +1,8 @@
+import { BOARD_WIDTH } from "./constants";
 import { createShip } from "./ship";
 
 const createGameboard = () => {
     const MAX_SHIPS = 5;
-    const BOARD_WIDTH = 10;
 
     const tiles = {
         WATER: "W",
