@@ -20,6 +20,10 @@ describe("Addding_ships_to_gameboard", () => {
         // Has isFleetSunk function
         expect(board).toHaveProperty("isFleetSunk");
         expect(typeof board.isFleetSunk).toBe("function");
+
+        // Has printBoard function
+        expect(board).toHaveProperty("printGameboard");
+        expect(typeof board.printGameboard).toBe("function");
     });
 
     test("Add_a_ship_to_board (1)", () => {

@@ -4,12 +4,13 @@ import { createGameboard } from "./gameboard";
 import { createHumanPlayer } from "./humanPlayer";
 
 const createGameHandler = () => {
+    /* istanbul ignore next */
     const domHandler = createDOMHandler();
 
     const player1 = createHumanPlayer();
-    const player1Board = createGameboard();
+    const player1Board = createGameboard(domHandler);
     const player2 = createComputerPlayer();
-    const player2Board = createGameboard();
+    const player2Board = createGameboard(domHandler);
 
     // Place ships player 1
     player1Board.placeShip([
@@ -55,7 +56,7 @@ const createGameHandler = () => {
         [8, 5],
     ]);
 
-    domHandler.renderBoard();
+    player1Board.printGameboard();
 
     return {
         player1,

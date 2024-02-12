@@ -1,7 +1,7 @@
 import { BOARD_WIDTH } from "./constants";
 import { createShip } from "./ship";
 
-const createGameboard = () => {
+const createGameboard = (domHandler) => {
     const MAX_SHIPS = 5;
 
     const tiles = {
@@ -123,6 +123,10 @@ const createGameboard = () => {
 
         isFleetSunk() {
             return placedShips.every((ship) => ship.isSunk());
+        },
+
+        printGameboard() {
+            domHandler.renderBoard(grid);
         },
     };
 };
