@@ -1,3 +1,8 @@
+:root {
+    --grid-cell-gap: 1px;
+    --grid-padding: 2px;
+}
+
 /*
  * ------------------------------------------------------------
  * General Styling
@@ -7,4 +12,54 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+}
+
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding-top: 2rem
+}
+
+.board-display {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+
+    background-color: #000000;
+}
+
+.game-board {
+    display: flex;
+    gap: var(--grid-cell-gap);
+
+    width: calc(30rem + calc(var(--grid-padding) * 2) + calc(var(--grid-cell-gap) * 9));
+    height: calc(30rem + calc(var(--grid-padding) * 2) + calc(var(--grid-cell-gap) * 9));
+
+    padding: 2px;
+
+    background-color: #000000;
+}
+
+.focused-board {
+    flex-wrap: wrap;
+}
+
+.unfocused-board {
+    flex-direction: row-reverse;
+    flex-wrap: wrap-reverse;
+}
+
+.grid-cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 3rem;
+    height: 3rem;
+
+    background-color: #ffffff;
 }
