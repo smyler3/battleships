@@ -9,8 +9,11 @@ const createGameHandler = () => {
 
     const player1 = createHumanPlayer();
     const player1Board = createGameboard(domHandler);
+    const player1BoardID = "player1Board";
+
     const player2 = createComputerPlayer();
     const player2Board = createGameboard(domHandler);
+    const player2BoardID = "player2Board";
 
     // Place ships player 1
     player1Board.placeShip([
@@ -56,7 +59,8 @@ const createGameHandler = () => {
         [8, 5],
     ]);
 
-    player1Board.printGameboard();
+    player1Board.printGameboard(player1BoardID);
+    player2Board.printGameboard(player2BoardID);
 
     return {
         player1,

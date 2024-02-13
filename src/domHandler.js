@@ -1,19 +1,21 @@
 const createDOMHandler = () => {
     return {
-        renderBoard(grid) {
-            const p1Board = document.createElement("span");
-            p1Board.id = "player1Board";
-            p1Board.classList.add("game-board");
+        renderBoard(grid, id) {
+            const board = document.createElement("span");
+            board.id = id;
+            board.classList.add("game-board");
 
-            grid.forEach((cell) => {
-                const gridCell = document.createElement("span");
-                gridCell.classList.add("grid-cell");
-                gridCell.textContent = cell;
+            grid.forEach((row) => {
+                row.forEach((cell) => {
+                    const gridCell = document.createElement("span");
+                    gridCell.classList.add("grid-cell");
+                    gridCell.textContent = cell;
 
-                p1Board.appendChild(gridCell);
+                    board.appendChild(gridCell);
+                });
             });
 
-            document.querySelector("body").appendChild(p1Board);
+            document.querySelector("body").appendChild(board);
         },
     };
 };

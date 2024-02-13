@@ -81,8 +81,17 @@ const createGameboard = (domHandler) => {
                 placedShips.push(newShip);
 
                 // Add ship references to the grid
-                for (let x = startx; x <= endx; x += 1) {
-                    for (let y = starty; y <= endy; y += 1) {
+                const [minX, maxX] = [
+                    Math.min(startx, endx),
+                    Math.max(startx, endx),
+                ];
+                const [minY, maxY] = [
+                    Math.min(starty, endy),
+                    Math.max(starty, endy),
+                ];
+
+                for (let x = minX; x <= maxX; x += 1) {
+                    for (let y = minY; y <= maxY; y += 1) {
                         grid[x][y] = placedShips.length - 1;
                     }
                 }
@@ -125,8 +134,8 @@ const createGameboard = (domHandler) => {
             return placedShips.every((ship) => ship.isSunk());
         },
 
-        printGameboard() {
-            domHandler.renderBoard(grid);
+        printGameboard(id) {
+            domHandler.renderBoard(grid, id);
         },
     };
 };
