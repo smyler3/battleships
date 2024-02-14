@@ -1,14 +1,8 @@
-import { BOARD_WIDTH } from "./constants";
+import { BOARD_WIDTH, TILES } from "./constants";
 import { createShip } from "./ship";
 
 const createGameboard = () => {
     const MAX_SHIPS = 5;
-
-    const tiles = {
-        WATER: "W",
-        MISS: "M",
-        HIT: "H",
-    };
 
     const allowedLengths = [
         { number: 2, remaining: 1 },
@@ -18,7 +12,7 @@ const createGameboard = () => {
     ];
 
     const grid = Array.from({ length: BOARD_WIDTH }, () => {
-        return Array.from({ length: BOARD_WIDTH }).fill(tiles.WATER);
+        return Array.from({ length: BOARD_WIDTH }).fill(TILES.WATER);
     });
 
     const placedShips = [];
@@ -43,7 +37,7 @@ const createGameboard = () => {
         for (let x = startx; x <= endx; x += 1) {
             for (let y = starty; y <= endy; y += 1) {
                 // Ship already placed there
-                if (grid[x][y] !== tiles.WATER) {
+                if (grid[x][y] !== TILES.WATER) {
                     return false;
                 }
             }
@@ -112,20 +106,20 @@ const createGameboard = () => {
             const square = grid[x][y];
 
             // Duplicate attack
-            if (square === tiles.MISS || square === tiles.HIT) {
+            if (square === TILES.MISS || square === TILES.HIT) {
                 throw new Error("Already attacked this square");
             }
 
             // Miss
-            if (square === tiles.WATER) {
-                grid[x][y] = tiles.MISS;
+            if (square === TILES.WATER) {
+                grid[x][y] = TILES.MISS;
 
                 return false;
             }
 
             // Hit
             placedShips[square].hit();
-            grid[x][y] = tiles.HIT;
+            grid[x][y] = TILES.HIT;
 
             return true;
         },

@@ -1,3 +1,4 @@
+import { TILES } from "../constants";
 import { createGameboard } from "../gameboard";
 
 let board = null;
@@ -22,8 +23,8 @@ describe("Addding_ships_to_gameboard", () => {
         expect(typeof board.isFleetSunk).toBe("function");
 
         // Has printBoard function
-        expect(board).toHaveProperty("printGameboard");
-        expect(typeof board.printGameboard).toBe("function");
+        expect(board).toHaveProperty("getGrid");
+        expect(typeof board.getGrid).toBe("function");
     });
 
     test("Add_a_ship_to_board (1)", () => {
@@ -33,6 +34,12 @@ describe("Addding_ships_to_gameboard", () => {
                 [0, 4],
             ]),
         ).toBe(true);
+
+        expect(board.getGrid()[0][0]).toBe(0);
+        expect(board.getGrid()[0][1]).toBe(0);
+        expect(board.getGrid()[0][2]).toBe(0);
+        expect(board.getGrid()[0][3]).toBe(0);
+        expect(board.getGrid()[0][4]).toBe(0);
     });
 
     test("Add_a_ship_to_board (2)", () => {
@@ -42,6 +49,23 @@ describe("Addding_ships_to_gameboard", () => {
                 [5, 3],
             ]),
         ).toBe(true);
+
+        expect(board.getGrid()[3][3]).toBe(0);
+        expect(board.getGrid()[4][3]).toBe(0);
+        expect(board.getGrid()[5][3]).toBe(0);
+    });
+
+    test("Add_a_ship_upside_down", () => {
+        expect(
+            board.placeShip([
+                [5, 3],
+                [3, 3],
+            ]),
+        ).toBe(true);
+
+        expect(board.getGrid()[3][3]).toBe(0);
+        expect(board.getGrid()[4][3]).toBe(0);
+        expect(board.getGrid()[5][3]).toBe(0);
     });
 
     test("Can't_add_invalid_length_ship", () => {
@@ -185,7 +209,9 @@ describe("Attacking_spaces_on_the_board", () => {
             [1, 0],
         ]);
 
+        expect(board.getGrid()[0][0]).toBe(0);
         expect(board.receiveAttack([0, 0])).toBe(true);
+        expect(board.getGrid()[0][0]).toBe(TILES.HIT);
 
         expect(board.receiveAttack([1, 0])).toBe(true);
     });
@@ -196,7 +222,9 @@ describe("Attacking_spaces_on_the_board", () => {
             [1, 0],
         ]);
 
+        expect(board.getGrid()[0][1]).toBe(TILES.WATER);
         expect(board.receiveAttack([0, 1])).toBe(false);
+        expect(board.getGrid()[0][1]).toBe(TILES.MISS);
 
         expect(board.receiveAttack([1, 1])).toBe(false);
 
