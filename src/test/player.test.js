@@ -1,11 +1,22 @@
 import { BOARD_WIDTH } from "../constants";
-import { createComputerPlayer } from "../computerPlayer";
+import { createPlayer } from "../player";
 
-describe("Computer_can_provide_an_attack_coordinate", () => {
-    let player = null;
+let player = null;
 
+describe("human_player_testing", () => {
+    test("human_player_created", () => {
+        player = createPlayer(false);
+        expect(player.isComputer).toBe(false);
+    });
+});
+
+describe("computer_player_testing", () => {
     beforeEach(() => {
-        player = createComputerPlayer();
+        player = createPlayer(true);
+    });
+
+    test("computer_player_created", () => {
+        expect(player.isComputer).toBe(true);
     });
 
     test("Computer_provides_attack", () => {
