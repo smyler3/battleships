@@ -1,12 +1,18 @@
 import { createGameHandler } from "../gameHandler";
 
+let handler = null;
+
+beforeEach(() => {
+    // Generate handler
+    handler = createGameHandler();
+});
+
 describe("Game_handler_setup", () => {
     test("Create_game_handler", () => {
-        const handler = createGameHandler();
+        expect(handler).toHaveProperty("setupGame");
+        expect(typeof handler.setupGame).toBe("function");
 
-        expect(handler).toHaveProperty("player1");
-        expect(handler).toHaveProperty("player2");
-        expect(handler).toHaveProperty("player1Board");
-        expect(handler).toHaveProperty("player2Board");
+        expect(handler).toHaveProperty("playGame");
+        expect(typeof handler.playGame).toBe("function");
     });
 });

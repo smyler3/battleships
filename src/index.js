@@ -1,4 +1,6 @@
 import { createGameHandler } from "./gameHandler";
 import "./style.css";
 
-createGameHandler();
+const battleShips = createGameHandler();
+battleShips.setupGame();
+battleShips.playGame();
