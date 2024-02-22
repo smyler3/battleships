@@ -4,6 +4,7 @@ import { createGameboard } from "./gameboard";
 
 const createGameHandler = () => {
     function switchActivePlayer() {
+        inactivePlayer = activePlayer;
         activePlayer = activePlayer === player1 ? player2 : player1;
     }
 
@@ -21,6 +22,7 @@ const createGameHandler = () => {
     let player2Board = null;
 
     let activePlayer = null;
+    let inactivePlayer = null;
     let activeBoard = null;
 
     return {
@@ -34,6 +36,7 @@ const createGameHandler = () => {
             player2Board = createGameboard();
 
             activePlayer = player1;
+            inactivePlayer = player2;
             activeBoard = player2Board;
 
             // Place ships player 1
@@ -135,7 +138,8 @@ const createGameHandler = () => {
                 // Switch player turns
                 switchActivePlayer();
                 switchActiveBoard();
-                domHandler.flipBoards();
+                domHandler.switchActiveBoard();
+                // domHandler.flipBoards();
             }
         },
     };

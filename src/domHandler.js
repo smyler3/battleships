@@ -84,9 +84,7 @@ const createDOMHandler = () => {
             player2Board.classList.toggle("focused-board");
             player2Board.classList.toggle("unfocused-board");
 
-            // Change which board is active
-            activeBoard =
-                activeBoard === player1Board ? player2Board : player1Board;
+            this.switchActiveBoard();
 
             // Switch board positions
             boardDisplay.prepend(boardDisplay.lastChild);
@@ -113,10 +111,16 @@ const createDOMHandler = () => {
 
         receiveAttack([x, y], hit) {
             const attackedCell = document.querySelector(
-                `.grid-cell[data-x="${x}"][data-y="${y}"]`,
+                `.grid-cell[data-x="${x}"][data-y="${y}"][data-player-id="${activeBoard.id}"]`,
             );
 
             attackedCell.textContent = hit ? "X" : "O";
+        },
+
+        // Change which board is active
+        switchActiveBoard() {
+            activeBoard =
+                activeBoard === player1Board ? player2Board : player1Board;
         },
     };
 };
