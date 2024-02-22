@@ -4,7 +4,6 @@ import { createGameboard } from "./gameboard";
 
 const createGameHandler = () => {
     function switchActivePlayer() {
-        inactivePlayer = activePlayer;
         activePlayer = activePlayer === player1 ? player2 : player1;
     }
 
@@ -22,7 +21,6 @@ const createGameHandler = () => {
     let player2Board = null;
 
     let activePlayer = null;
-    let inactivePlayer = null;
     let activeBoard = null;
 
     return {
@@ -36,7 +34,6 @@ const createGameHandler = () => {
             player2Board = createGameboard();
 
             activePlayer = player1;
-            inactivePlayer = player2;
             activeBoard = player2Board;
 
             // Place ships player 1
@@ -104,9 +101,7 @@ const createGameHandler = () => {
                     // Get computer player move
                     if (activePlayer.isComputer) {
                         // Pause to simulate computer thinking
-                        await new Promise((resolve) =>
-                            setTimeout(resolve, 1000),
-                        );
+                        await new Promise((resolve) => setTimeout(resolve, 10));
 
                         // Ask computer for attack
                         attack = activePlayer.provideAttackCoordinates();
@@ -132,6 +127,7 @@ const createGameHandler = () => {
                 if (activeBoard.isFleetSunk()) {
                     // Game over
                     gameOver = true;
+                    domHandler.displayWinner("Player 1");
                     break;
                 }
 

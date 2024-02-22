@@ -1,6 +1,9 @@
 :root {
     --grid-cell-gap: 1px;
     --grid-padding: 2px;
+    --grid-cell-size: 2rem;
+
+    --banner-background: #00000099;
 }
 
 /*
@@ -19,7 +22,7 @@ body {
     align-items: center;
     justify-content: center;
 
-    padding-top: 2rem
+    padding-top: 11vh;
 }
 
 .board-display {
@@ -36,8 +39,8 @@ body {
     display: flex;
     gap: var(--grid-cell-gap);
 
-    width: calc(30rem + calc(var(--grid-padding) * 2) + calc(var(--grid-cell-gap) * 9));
-    height: calc(30rem + calc(var(--grid-padding) * 2) + calc(var(--grid-cell-gap) * 9));
+    width: calc(calc(10 * var(--grid-cell-size)) + calc(var(--grid-padding) * 2) + calc(var(--grid-cell-gap) * 9));
+    height: calc(calc(10 * var(--grid-cell-size)) + calc(var(--grid-padding) * 2) + calc(var(--grid-cell-gap) * 9));
 
     padding: 2px;
 
@@ -58,8 +61,57 @@ body {
     align-items: center;
     justify-content: center;
 
-    width: 3rem;
-    height: 3rem;
+    width: var(--grid-cell-size);
+    height: var(--grid-cell-size);
 
     background-color: #ffffff;
+}
+
+.clickable {
+    cursor: pointer;
+}
+
+.water-cell {
+    background-color: aqua;
+}
+
+.ship-cell {
+    background-color: grey;
+}
+
+.miss-cell {
+    background-color: #ffffff;
+}
+
+.hit-cell {
+    background-color: red;
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 2;
+
+    display: flex;
+    align-items: start;
+
+    width: 100%;
+    height: 100%;
+
+    overflow: auto;
+}
+
+.message-banner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    height: 10%;
+    width: 100%;
+
+    font-size: xxx-large;
+    font-weight: bold;
+    color: white;
+    background-color: var(--banner-background);
 }

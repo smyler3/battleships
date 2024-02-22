@@ -30,6 +30,9 @@ const createDOMHandler = () => {
             row.forEach((cell, y) => {
                 const gridCell = document.createElement("span");
                 gridCell.classList.add("grid-cell");
+                gridCell.classList.add(
+                    cell === TILES.WATER ? "water-cell" : "ship-cell",
+                );
                 gridCell.setAttribute("data-x", x);
                 gridCell.setAttribute("data-y", y);
                 gridCell.setAttribute("data-player-id", id);
@@ -55,6 +58,10 @@ const createDOMHandler = () => {
             player2Board = clonedBoard;
         }
         activeBoard = clonedBoard;
+
+        activeBoard.childNodes.forEach((cell) => {
+            cell.classList.remove("clickable");
+        });
     }
 
     return {
@@ -104,6 +111,7 @@ const createDOMHandler = () => {
                         cell.addEventListener("click", () =>
                             selectCellEvent(cell, resolve),
                         );
+                        cell.classList.add("clickable");
                     }
                 });
             });
@@ -115,12 +123,29 @@ const createDOMHandler = () => {
             );
 
             attackedCell.textContent = hit ? "X" : "O";
+            attackedCell.classList.add(hit ? "hit-cell" : "miss-cell");
         },
 
         // Change which board is active
         switchActiveBoard() {
             activeBoard =
                 activeBoard === player1Board ? player2Board : player1Board;
+        },
+
+        displayWinner(name) {
+            const modal = document.createElement("div");
+            modal.classList.add("modal");
+
+            const messageBanner = document.createElement("div");
+            messageBanner.classList.add("message-banner");
+            messageBanner.textContent = `Victory for ${name}!`;
+
+            modal.appendChild(messageBanner);
+
+            console.log("1");
+            console.log(document.querySelector("body"));
+
+            document.querySelector("body").prepend(modal);
         },
     };
 };
