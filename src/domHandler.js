@@ -110,6 +110,14 @@ const createDOMHandler = () => {
                 });
             });
         },
+
+        receiveAttack([x, y], hit) {
+            const attackedCell = document.querySelector(
+                `.grid-cell[data-x="${x}"][data-y="${y}"]`,
+            );
+
+            attackedCell.textContent = hit ? "X" : "O";
+        },
     };
 };
 

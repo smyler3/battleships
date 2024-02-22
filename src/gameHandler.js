@@ -96,38 +96,32 @@ const createGameHandler = () => {
 
                 while (!validAttack) {
                     let attack = null;
+                    let hit = null;
 
-                    // Computer player
+                    // Get computer player move
                     if (activePlayer.isComputer) {
                         // Pause to simulate computer thinking
                         await new Promise((resolve) =>
-                            setTimeout(resolve, 5000),
+                            setTimeout(resolve, 1000),
                         );
 
                         // Ask computer for attack
                         attack = activePlayer.provideAttackCoordinates();
-
-                        // Try that attack on opponent board
-                        try {
-                            activeBoard.receiveAttack(attack);
-                            validAttack = true;
-                        } catch {
-                            // If attack is invalid, ask again
-                        }
                     }
 
-                    // Human player
+                    // Get human player move
                     else {
                         // Ask human player for attack
                         attack = await domHandler.activateCurrentBoard();
+                    }
 
-                        // Try that attack on opponent board
-                        try {
-                            activeBoard.receiveAttack(attack);
-                            validAttack = true;
-                        } catch {
-                            // If attack is invalid, ask again
-                        }
+                    // Try that attack on opponent board
+                    try {
+                        hit = activeBoard.receiveAttack(attack);
+                        domHandler.receiveAttack(attack, hit);
+                        validAttack = true;
+                    } catch {
+                        // If attack is invalid, ask again
                     }
                 }
 
