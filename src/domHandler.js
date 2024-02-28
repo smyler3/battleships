@@ -45,6 +45,28 @@ const createDOMHandler = () => {
         boardDisplay.prepend(board);
     }
 
+    function createHiddenDisplay(grid, id) {
+        const board = document.createElement("span");
+        board.id = id;
+        board.classList.add("game-board");
+
+        // Create grid cells with cell information stored and displayed
+        grid.forEach((row, x) => {
+            row.forEach((cell, y) => {
+                const gridCell = document.createElement("span");
+                gridCell.classList.add("grid-cell");
+                gridCell.classList.add("water-cell");
+                gridCell.setAttribute("data-x", x);
+                gridCell.setAttribute("data-y", y);
+                gridCell.setAttribute("data-player-id", id);
+
+                board.appendChild(gridCell);
+            });
+        });
+
+        boardDisplay.prepend(board);
+    }
+
     // Remove ability to attack cells on opponent's board
     function deactivateCurrentBoard() {
         // Clone the parent node to remove all event listeners
@@ -66,11 +88,15 @@ const createDOMHandler = () => {
 
     return {
         // Create and render display of both players boards
-        renderInitialBoard(player1Grid, player2Grid) {
+        renderInitialBoard(player1Grid, player2Grid, hideSecondBoard = false) {
             boardDisplay = document.querySelector(".board-display");
 
             createGridDisplay(player1Grid, PLAYER_1_BOARD_ID);
-            createGridDisplay(player2Grid, PLAYER_2_BOARD_ID);
+            if (hideSecondBoard) {
+                createHiddenDisplay(player2Grid, PLAYER_2_BOARD_ID);
+            } else {
+                createGridDisplay(player2Grid, PLAYER_2_BOARD_ID);
+            }
 
             player1Board = document.querySelector(`#${PLAYER_1_BOARD_ID}`);
             player2Board = document.querySelector(`#${PLAYER_2_BOARD_ID}`);

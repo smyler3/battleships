@@ -83,6 +83,7 @@ const createGameHandler = () => {
             domHandler.renderInitialBoard(
                 player1Board.getGrid(),
                 player2Board.getGrid(),
+                player2.isComputer,
             );
         },
 
