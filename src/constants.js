@@ -4,8 +4,21 @@ const PLAYER_2_BOARD_ID = "player2Board";
 
 const TILES = {
     WATER: "W",
-    MISS: "M",
-    HIT: "H",
+    MISS: "O",
+    HIT: "X",
 };
 
-export { BOARD_WIDTH, PLAYER_1_BOARD_ID, PLAYER_2_BOARD_ID, TILES };
+const TILE_CLASSES = {
+    WATER: "water-cell",
+    MISS: "miss-cell",
+    HIT: "hit-cell",
+    SHIP: "ship-cell",
+};
+
+export {
+    BOARD_WIDTH,
+    PLAYER_1_BOARD_ID,
+    PLAYER_2_BOARD_ID,
+    TILES,
+    TILE_CLASSES,
+};

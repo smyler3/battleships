@@ -1,4 +1,9 @@
-import { PLAYER_1_BOARD_ID, PLAYER_2_BOARD_ID, TILES } from "./constants";
+import {
+    PLAYER_1_BOARD_ID,
+    PLAYER_2_BOARD_ID,
+    TILES,
+    TILE_CLASSES,
+} from "./constants";
 
 const createDOMHandler = () => {
     let boardDisplay = null;
@@ -31,7 +36,9 @@ const createDOMHandler = () => {
                 const gridCell = document.createElement("span");
                 gridCell.classList.add("grid-cell");
                 gridCell.classList.add(
-                    cell === TILES.WATER ? "water-cell" : "ship-cell",
+                    cell === TILES.WATER
+                        ? TILE_CLASSES.WATER
+                        : TILE_CLASSES.SHIP,
                 );
                 gridCell.setAttribute("data-x", x);
                 gridCell.setAttribute("data-y", y);
@@ -55,7 +62,7 @@ const createDOMHandler = () => {
             row.forEach((cell, y) => {
                 const gridCell = document.createElement("span");
                 gridCell.classList.add("grid-cell");
-                gridCell.classList.add("water-cell");
+                gridCell.classList.add(TILE_CLASSES.WATER);
                 gridCell.setAttribute("data-x", x);
                 gridCell.setAttribute("data-y", y);
                 gridCell.setAttribute("data-player-id", id);
@@ -129,10 +136,17 @@ const createDOMHandler = () => {
                 Array.from(activeBoard.childNodes).forEach((cell) => {
                     if (
                         // Tile hasn't already been attacked
-                        ![TILES.HIT, TILES.MISS].some(
-                            (tileType) => tileType === cell.textContent,
+                        ![TILE_CLASSES.HIT, TILE_CLASSES.MISS].some(
+                            (tileType) => cell.classList.contains(tileType),
                         )
                     ) {
+                        console.log(
+                            cell.getAttribute("data-x"),
+                            cell.getAttribute("data-y"),
+                            TILES.HIT,
+                            TILES.MISS,
+                            cell.classList,
+                        );
                         // Make selectable by click
                         cell.addEventListener("click", () =>
                             selectCellEvent(cell, resolve),
@@ -148,8 +162,12 @@ const createDOMHandler = () => {
                 `.grid-cell[data-x="${x}"][data-y="${y}"][data-player-id="${activeBoard.id}"]`,
             );
 
-            attackedCell.textContent = hit ? "X" : "O";
-            attackedCell.classList.add(hit ? "hit-cell" : "miss-cell");
+            attackedCell.textContent = hit ? TILES.HIT : TILES.WATER;
+            attackedCell.classList.remove(TILE_CLASSES.WATER);
+            attackedCell.classList.remove("clickable");
+            attackedCell.classList.add(
+                hit ? TILE_CLASSES.HIT : TILE_CLASSES.MISS,
+            );
         },
 
         // Change which board is active
@@ -167,9 +185,6 @@ const createDOMHandler = () => {
             messageBanner.textContent = `Victory for ${name}!`;
 
             modal.appendChild(messageBanner);
-
-            console.log("1");
-            console.log(document.querySelector("body"));
 
             document.querySelector("body").prepend(modal);
         },

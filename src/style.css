@@ -63,12 +63,13 @@ body {
 
     width: var(--grid-cell-size);
     height: var(--grid-cell-size);
-
-    background-color: #ffffff;
 }
 
 .clickable {
     cursor: pointer;
+}
+.clickable:hover {
+    background-color: rgb(0, 183, 255);
 }
 
 .water-cell {
