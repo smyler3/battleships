@@ -1,6 +1,7 @@
 import { createPlayer } from "./player";
-import { createDOMHandler } from "./domHandler";
+import { createDOMBoardHandler } from "./domBoardHandler";
 import { createGameboard } from "./gameboard";
+import { createDOMMessageHandler } from "./domMessageHandler";
 
 const createGameHandler = () => {
     function switchActivePlayer() {
@@ -12,7 +13,8 @@ const createGameHandler = () => {
             activeBoard === player1Board ? player2Board : player1Board;
     }
 
-    let domHandler = null;
+    let boardHandler = null;
+    let messageHandler = null;
 
     let player1 = null;
     let player1Board = null;
@@ -25,7 +27,8 @@ const createGameHandler = () => {
 
     return {
         setupGame() {
-            domHandler = createDOMHandler();
+            boardHandler = createDOMBoardHandler();
+            messageHandler = createDOMMessageHandler();
 
             player1 = createPlayer(false);
             player1Board = createGameboard();
@@ -80,7 +83,7 @@ const createGameHandler = () => {
                 [8, 5],
             ]);
 
-            domHandler.renderInitialBoard(
+            boardHandler.renderInitialBoard(
                 player1Board.getGrid(),
                 player2Board.getGrid(),
                 player2.isComputer,
@@ -93,6 +96,7 @@ const createGameHandler = () => {
 
             while (!gameOver) {
                 console.log("New turn");
+                messageHandler.displayCurrentTurn(!activePlayer.isComputer);
                 let validAttack = false;
 
                 while (!validAttack) {
@@ -102,7 +106,9 @@ const createGameHandler = () => {
                     // Get computer player move
                     if (activePlayer.isComputer) {
                         // Pause to simulate computer thinking
-                        await new Promise((resolve) => setTimeout(resolve, 10));
+                        await new Promise((resolve) =>
+                            setTimeout(resolve, 1000),
+                        );
 
                         // Ask computer for attack
                         attack = activePlayer.provideAttackCoordinates();
@@ -111,14 +117,15 @@ const createGameHandler = () => {
                     // Get human player move
                     else {
                         // Ask human player for attack
-                        attack = await domHandler.activateCurrentBoard();
+                        attack = await boardHandler.activateCurrentBoard();
                     }
 
                     // Try that attack on opponent board
                     try {
                         hit = activeBoard.receiveAttack(attack);
-                        domHandler.receiveAttack(attack, hit);
+                        boardHandler.receiveAttack(attack, hit);
                         validAttack = true;
+                        messageHandler.displayAttackResult(hit);
                     } catch {
                         // If attack is invalid, ask again
                     }
@@ -128,15 +135,17 @@ const createGameHandler = () => {
                 if (activeBoard.isFleetSunk()) {
                     // Game over
                     gameOver = true;
-                    domHandler.displayWinner("Player 1");
+                    messageHandler.displayWinner("Player 1");
                     break;
                 }
+
+                await new Promise((resolve) => setTimeout(resolve, 1000));
 
                 // Switch player turns
                 switchActivePlayer();
                 switchActiveBoard();
-                domHandler.switchActiveBoard();
-                // domHandler.flipBoards();
+                boardHandler.switchActiveBoard();
+                // boardHandler.flipBoards();
             }
         },
     };
