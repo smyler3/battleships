@@ -5,19 +5,18 @@ import {
     TILE_CLASSES,
 } from "./constants";
 
-const createDOMHandler = () => {
+const createDOMBoardHandler = () => {
     let boardDisplay = null;
     let player1Board = null;
     let player2Board = null;
     let activeBoard = null;
-
     const selectCellEvent = (gridCell, resolve) => {
         const attackCoordinates = [
             gridCell.getAttribute("data-x"),
             gridCell.getAttribute("data-y"),
         ];
 
-        console.log(`[${attackCoordinates[0]}, ${attackCoordinates[1]}]`);
+        // console.log(`[${attackCoordinates[0]}, ${attackCoordinates[1]}]`);
 
         resolve(attackCoordinates);
 
@@ -59,7 +58,7 @@ const createDOMHandler = () => {
 
         // Create grid cells with cell information stored and displayed
         grid.forEach((row, x) => {
-            row.forEach((cell, y) => {
+            row.forEach((_, y) => {
                 const gridCell = document.createElement("span");
                 gridCell.classList.add("grid-cell");
                 gridCell.classList.add(TILE_CLASSES.WATER);
@@ -140,13 +139,7 @@ const createDOMHandler = () => {
                             (tileType) => cell.classList.contains(tileType),
                         )
                     ) {
-                        console.log(
-                            cell.getAttribute("data-x"),
-                            cell.getAttribute("data-y"),
-                            TILES.HIT,
-                            TILES.MISS,
-                            cell.classList,
-                        );
+                        console.log(cell);
                         // Make selectable by click
                         cell.addEventListener("click", () =>
                             selectCellEvent(cell, resolve),
@@ -175,20 +168,7 @@ const createDOMHandler = () => {
             activeBoard =
                 activeBoard === player1Board ? player2Board : player1Board;
         },
-
-        displayWinner(name) {
-            const modal = document.createElement("div");
-            modal.classList.add("modal");
-
-            const messageBanner = document.createElement("div");
-            messageBanner.classList.add("message-banner");
-            messageBanner.textContent = `Victory for ${name}!`;
-
-            modal.appendChild(messageBanner);
-
-            document.querySelector("body").prepend(modal);
-        },
     };
 };
 
-export { createDOMHandler };
+export { createDOMBoardHandler };
