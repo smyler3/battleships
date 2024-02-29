@@ -19,10 +19,9 @@
 
 body {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-
-    padding-top: 11vh;
 }
 
 .board-display {
@@ -88,21 +87,6 @@ body {
     background-color: red;
 }
 
-.modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 2;
-
-    display: flex;
-    align-items: start;
-
-    width: 100%;
-    height: 100%;
-
-    overflow: auto;
-}
-
 .message-banner {
     display: flex;
     align-items: center;
@@ -110,6 +94,9 @@ body {
 
     height: 10%;
     width: 100%;
+
+    margin-bottom: 1.5rem;
+    padding: 1.5rem 0;
 
     font-size: xxx-large;
     font-weight: bold;
