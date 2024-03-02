@@ -16,10 +16,10 @@ const createGameboard = () => {
     const placedShips = [];
 
     // Checks whether a given pair of coordinates is valid for placing a ship
-    function isValidCoords(startX, startY, endX, endY) {
+    function isValidCoords(minX, minY, maxX, maxY) {
         // Ship placed off the board
         if (
-            [startX, startY, endX, endY].some(
+            [minX, minY, maxX, maxY].some(
                 (coord) => coord < 0 || coord >= BOARD_WIDTH,
             )
         ) {
@@ -27,18 +27,13 @@ const createGameboard = () => {
         }
 
         // Ship placed diagonally
-        if (startX !== endX && startY !== endY) {
+        if (minX !== maxX && minY !== maxY) {
             return false;
         }
 
-        const smallX = Math.min(startX, endX);
-        const bigX = Math.min(startX, endX);
-        const smallY = Math.min(startY, endY);
-        const bigY = Math.min(startY, endY);
-
         // Check for ships already in the grid
-        for (let x = smallX; x <= bigX; x += 1) {
-            for (let y = smallY; y <= bigY; y += 1) {
+        for (let x = minX; x <= maxX; x += 1) {
+            for (let y = minY; y <= maxY; y += 1) {
                 // Ship already placed there
                 if (grid[x][y] !== TILES.WATER) {
                     return false;
@@ -57,8 +52,13 @@ const createGameboard = () => {
                 throw new Error("Ship capacity reached");
             }
 
+            const minX = Math.min(startX, endX);
+            const maxX = Math.max(startX, endX);
+            const minY = Math.min(startY, endY);
+            const maxY = Math.max(startY, endY);
+
             // Invalid coordinates
-            if (!isValidCoords(startX, startY, endX, endY)) {
+            if (!isValidCoords(minX, minY, maxX, maxY)) {
                 throw new Error("Invalid coordinates");
             }
 
@@ -78,14 +78,6 @@ const createGameboard = () => {
                 placedShips.push(newShip);
 
                 // Add ship references to the grid
-                const [minX, maxX] = [
-                    Math.min(startX, endX),
-                    Math.max(startX, endX),
-                ];
-                const [minY, maxY] = [
-                    Math.min(startY, endY),
-                    Math.max(startY, endY),
-                ];
 
                 for (let x = minX; x <= maxX; x += 1) {
                     for (let y = minY; y <= maxY; y += 1) {

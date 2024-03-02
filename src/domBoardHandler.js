@@ -222,7 +222,7 @@ const createDOMBoardHandler = () => {
         },
 
         // Add a placed ship to the board
-        placeShip([startX, startY], [endX, endY]) {
+        placeShip([startX, startY], [endX, endY], hidden) {
             let start = null;
             let end = null;
 
@@ -236,8 +236,10 @@ const createDOMBoardHandler = () => {
                         `.grid-cell[data-x="${startX}"][data-y="${y}"]`,
                     );
 
-                    cell.classList.add(TILE_CLASSES.SHIP);
-                    cell.classList.remove(TILE_CLASSES.WATER);
+                    if (!hidden) {
+                        cell.classList.add(TILE_CLASSES.SHIP);
+                        cell.classList.remove(TILE_CLASSES.WATER);
+                    }
                 }
             }
             // Placing ship tiles along the x-axis
@@ -250,8 +252,10 @@ const createDOMBoardHandler = () => {
                         `.grid-cell[data-x="${x}"][data-y="${startY}"]`,
                     );
 
-                    cell.classList.add(TILE_CLASSES.SHIP);
-                    cell.classList.remove(TILE_CLASSES.WATER);
+                    if (!hidden) {
+                        cell.classList.add(TILE_CLASSES.SHIP);
+                        cell.classList.remove(TILE_CLASSES.WATER);
+                    }
                 }
             }
 

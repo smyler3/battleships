@@ -1,4 +1,5 @@
 import { BOARD_WIDTH } from "../constants";
+import { createGameboard } from "../gameboard";
 import { createPlayer } from "../player";
 
 let player = null;
@@ -56,7 +57,10 @@ describe("computer_player_testing", () => {
     });
 
     test("Computer_provides_ship_coordinates", () => {
-        const shipCoordinates = player.provideShipCoordinates();
+        const board = createGameboard();
+        const shipCoordinates = player.provideShipCoordinates(
+            board.getAllowedLengths(),
+        );
 
         // Received coordinate array
         expect(shipCoordinates).toEqual(expect.any(Array));

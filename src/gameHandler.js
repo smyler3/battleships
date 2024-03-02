@@ -63,26 +63,26 @@ const createGameHandler = () => {
             // ]);
 
             // Place ships player 2
-            player2Board.placeShip([
-                [9, 9],
-                [5, 9],
-            ]);
-            player2Board.placeShip([
-                [9, 8],
-                [6, 8],
-            ]);
-            player2Board.placeShip([
-                [9, 7],
-                [7, 7],
-            ]);
-            player2Board.placeShip([
-                [9, 6],
-                [7, 6],
-            ]);
-            player2Board.placeShip([
-                [9, 5],
-                [8, 5],
-            ]);
+            // player2Board.placeShip([
+            //     [9, 9],
+            //     [5, 9],
+            // ]);
+            // player2Board.placeShip([
+            //     [9, 8],
+            //     [6, 8],
+            // ]);
+            // player2Board.placeShip([
+            //     [9, 7],
+            //     [7, 7],
+            // ]);
+            // player2Board.placeShip([
+            //     [9, 6],
+            //     [7, 6],
+            // ]);
+            // player2Board.placeShip([
+            //     [9, 5],
+            //     [8, 5],
+            // ]);
 
             boardHandler.renderInitialBoard(
                 player1Board.getGrid(),
@@ -90,10 +90,30 @@ const createGameHandler = () => {
             );
         },
 
-        //
+        // Fill the board with ships
         async setupShips() {
             let placed = 0;
 
+            // Set up computer ships
+            while (placed < MAX_SHIPS) {
+                // Try placing a ship at computer generated coordinates
+                try {
+                    let [startPos, endPos] = player2.provideShipCoordinates(
+                        player2Board.getAllowedLengths(),
+                    );
+                    player2Board.placeShip([startPos, endPos]);
+                    boardHandler.placeShip(startPos, endPos, true);
+                    placed += 1;
+                    console.log([startPos, endPos]);
+                } catch {
+                    // If coordinates invalid, ask again
+                }
+            }
+
+            boardHandler.flipBoards();
+            placed = 0;
+
+            // Set up player ships
             while (placed < MAX_SHIPS) {
                 messageHandler.displayShipPlacePrompt(MAX_SHIPS - placed);
 
@@ -114,8 +134,6 @@ const createGameHandler = () => {
                     // If coordinates invalid, ask again
                 }
             }
-
-            boardHandler.flipBoards();
         },
 
         // Main game loop
@@ -123,7 +141,6 @@ const createGameHandler = () => {
             let gameOver = false;
 
             while (!gameOver) {
-                console.log("New turn");
                 messageHandler.displayCurrentTurn(!activePlayer.isComputer);
                 let validAttack = false;
 
@@ -145,7 +162,7 @@ const createGameHandler = () => {
                     // Get human player move
                     else {
                         // Ask human player for attack
-                        attack = await boardHandler.enableAttackCellSelection();
+                        attack = await boardHandler.enableAttackSelection();
                     }
 
                     // Try that attack on opponent board
