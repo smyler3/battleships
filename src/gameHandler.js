@@ -2,6 +2,7 @@ import { createPlayer } from "./player";
 import { createDOMBoardHandler } from "./domBoardHandler";
 import { createGameboard } from "./gameboard";
 import { createDOMMessageHandler } from "./domMessageHandler";
+import { MAX_SHIPS } from "./constants";
 
 const createGameHandler = () => {
     function switchActivePlayer() {
@@ -40,26 +41,26 @@ const createGameHandler = () => {
             activeBoard = player2Board;
 
             // Place ships player 1
-            player1Board.placeShip([
-                [3, 3],
-                [7, 3],
-            ]);
-            player1Board.placeShip([
-                [3, 4],
-                [6, 4],
-            ]);
-            player1Board.placeShip([
-                [3, 5],
-                [5, 5],
-            ]);
-            player1Board.placeShip([
-                [3, 6],
-                [5, 6],
-            ]);
-            player1Board.placeShip([
-                [3, 7],
-                [4, 7],
-            ]);
+            // player1Board.placeShip([
+            //     [3, 3],
+            //     [7, 3],
+            // ]);
+            // player1Board.placeShip([
+            //     [3, 4],
+            //     [6, 4],
+            // ]);
+            // player1Board.placeShip([
+            //     [3, 5],
+            //     [5, 5],
+            // ]);
+            // player1Board.placeShip([
+            //     [3, 6],
+            //     [5, 6],
+            // ]);
+            // player1Board.placeShip([
+            //     [3, 7],
+            //     [4, 7],
+            // ]);
 
             // Place ships player 2
             player2Board.placeShip([
@@ -86,8 +87,35 @@ const createGameHandler = () => {
             boardHandler.renderInitialBoard(
                 player1Board.getGrid(),
                 player2Board.getGrid(),
-                player2.isComputer,
             );
+        },
+
+        //
+        async setupShips() {
+            let placed = 0;
+
+            while (placed < MAX_SHIPS) {
+                messageHandler.displayShipPlacePrompt(MAX_SHIPS - placed);
+
+                // Wait for ship start and end positions
+                let startPos =
+                    await boardHandler.enableShipStartPositionSelection();
+                let endPos = await boardHandler.enableShipEndPositionSelection(
+                    startPos,
+                    player1Board.getAllowedLengths(),
+                );
+
+                // Try placing a ship at those coordinates
+                try {
+                    player1Board.placeShip([startPos, endPos]);
+                    boardHandler.placeShip(startPos, endPos);
+                    placed += 1;
+                } catch {
+                    // If coordinates invalid, ask again
+                }
+            }
+
+            boardHandler.flipBoards();
         },
 
         // Main game loop
@@ -117,7 +145,7 @@ const createGameHandler = () => {
                     // Get human player move
                     else {
                         // Ask human player for attack
-                        attack = await boardHandler.activateCurrentBoard();
+                        attack = await boardHandler.enableAttackCellSelection();
                     }
 
                     // Try that attack on opponent board

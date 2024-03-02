@@ -12,6 +12,9 @@ describe("Game_handler_setup", () => {
         expect(handler).toHaveProperty("setupGame");
         expect(typeof handler.setupGame).toBe("function");
 
+        expect(handler).toHaveProperty("setupShips");
+        expect(typeof handler.setupShips).toBe("function");
+
         expect(handler).toHaveProperty("playGame");
         expect(typeof handler.playGame).toBe("function");
     });

@@ -8,6 +8,10 @@ const createDOMMessageHandler = () => {
     document.querySelector("body").prepend(messageBanner);
 
     return {
+        displayShipPlacePrompt(shipsRemaining) {
+            messageBanner.textContent = `Place a ship, ${shipsRemaining} ships remaining`;
+        },
+
         displayCurrentTurn(playerTurn = true) {
             messageBanner.textContent = playerTurn
                 ? "Your turn! Make an attack"

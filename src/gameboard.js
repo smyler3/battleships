@@ -131,6 +131,10 @@ const createGameboard = () => {
         getGrid() {
             return grid;
         },
+
+        getAllowedLengths() {
+            return allowedLengths;
+        },
     };
 };
 

@@ -1,6 +1,11 @@
 import { createGameHandler } from "./gameHandler";
 import "./style.css";
 
-const battleShips = createGameHandler();
-battleShips.setupGame();
-battleShips.playGame();
+async function main() {
+    const battleShips = createGameHandler();
+    battleShips.setupGame();
+    await battleShips.setupShips();
+    battleShips.playGame();
+}
+
+main();

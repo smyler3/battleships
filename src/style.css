@@ -87,6 +87,14 @@ body {
     background-color: red;
 }
 
+.ship-start {
+    background-color: greenyellow;
+}
+
+.potential-ship-end {
+    background-color: green;
+}
+
 .message-banner {
     display: flex;
     align-items: center;
