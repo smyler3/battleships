@@ -31,9 +31,14 @@ const createGameboard = () => {
             return false;
         }
 
+        const smallX = Math.min(startX, endX);
+        const bigX = Math.min(startX, endX);
+        const smallY = Math.min(startY, endY);
+        const bigY = Math.min(startY, endY);
+
         // Check for ships already in the grid
-        for (let x = startX; x <= endX; x += 1) {
-            for (let y = startY; y <= endY; y += 1) {
+        for (let x = smallX; x <= bigX; x += 1) {
+            for (let y = smallY; y <= bigY; y += 1) {
                 // Ship already placed there
                 if (grid[x][y] !== TILES.WATER) {
                     return false;
