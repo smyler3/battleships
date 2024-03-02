@@ -1,7 +1,6 @@
 import {
     PLAYER_1_BOARD_ID,
     PLAYER_2_BOARD_ID,
-    TILES,
     TILE_CLASSES,
 } from "./constants";
 
@@ -285,7 +284,6 @@ const createDOMBoardHandler = () => {
                 `.grid-cell[data-x="${x}"][data-y="${y}"][data-player-id="${activeBoard.id}"]`,
             );
 
-            attackedCell.textContent = hit ? TILES.HIT : TILES.WATER;
             attackedCell.classList.remove(TILE_CLASSES.WATER);
             attackedCell.classList.remove("clickable");
             attackedCell.classList.add(

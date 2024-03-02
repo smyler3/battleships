@@ -1,9 +1,7 @@
-import { BOARD_WIDTH, TILES } from "./constants";
+import { BOARD_WIDTH, MAX_SHIPS, TILES } from "./constants";
 import { createShip } from "./ship";
 
 const createGameboard = () => {
-    const MAX_SHIPS = 5;
-
     const allowedLengths = [
         { number: 2, remaining: 1 },
         { number: 3, remaining: 2 },
@@ -18,10 +16,10 @@ const createGameboard = () => {
     const placedShips = [];
 
     // Checks whether a given pair of coordinates is valid for placing a ship
-    function isValidCoords(startx, starty, endx, endy) {
+    function isValidCoords(startX, startY, endX, endY) {
         // Ship placed off the board
         if (
-            [startx, starty, endx, endy].some(
+            [startX, startY, endX, endY].some(
                 (coord) => coord < 0 || coord >= BOARD_WIDTH,
             )
         ) {
@@ -29,13 +27,13 @@ const createGameboard = () => {
         }
 
         // Ship placed diagonally
-        if (startx !== endx && starty !== endy) {
+        if (startX !== endX && startY !== endY) {
             return false;
         }
 
         // Check for ships already in the grid
-        for (let x = startx; x <= endx; x += 1) {
-            for (let y = starty; y <= endy; y += 1) {
+        for (let x = startX; x <= endX; x += 1) {
+            for (let y = startY; y <= endY; y += 1) {
                 // Ship already placed there
                 if (grid[x][y] !== TILES.WATER) {
                     return false;
@@ -48,19 +46,19 @@ const createGameboard = () => {
 
     return {
         // Place a ship on the game board based on start and end coordinates
-        placeShip([[startx, starty], [endx, endy]]) {
+        placeShip([[startX, startY], [endX, endY]]) {
             // Max ships already placed
             if (placedShips.length >= MAX_SHIPS) {
                 throw new Error("Ship capacity reached");
             }
 
             // Invalid coordinates
-            if (!isValidCoords(startx, starty, endx, endy)) {
+            if (!isValidCoords(startX, startY, endX, endY)) {
                 throw new Error("Invalid coordinates");
             }
 
             const shipLength =
-                1 + Math.max(Math.abs(startx - endx), Math.abs(starty - endy));
+                1 + Math.max(Math.abs(startX - endX), Math.abs(startY - endY));
 
             // Check ship length validity
             const obj = allowedLengths.find((obj) => obj.number === shipLength);
@@ -76,12 +74,12 @@ const createGameboard = () => {
 
                 // Add ship references to the grid
                 const [minX, maxX] = [
-                    Math.min(startx, endx),
-                    Math.max(startx, endx),
+                    Math.min(startX, endX),
+                    Math.max(startX, endX),
                 ];
                 const [minY, maxY] = [
-                    Math.min(starty, endy),
-                    Math.max(starty, endy),
+                    Math.min(startY, endY),
+                    Math.max(startY, endY),
                 ];
 
                 for (let x = minX; x <= maxX; x += 1) {
