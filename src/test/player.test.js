@@ -54,4 +54,31 @@ describe("computer_player_testing", () => {
             previousAttacks.add(attackStringFormat);
         }
     });
+
+    test("Computer_provides_ship_coordinates", () => {
+        const shipCoordinates = player.provideShipCoordinates();
+
+        // Received coordinate array
+        expect(shipCoordinates).toEqual(expect.any(Array));
+
+        // Start coordinates valid
+        const startCoords = shipCoordinates[0];
+        expect(startCoords).toEqual(expect.any(Array));
+        expect(startCoords[0]).toEqual(expect.any(Number));
+        expect(startCoords[0] >= 0 && startCoords[0] < BOARD_WIDTH).toEqual(
+            true,
+        );
+        expect(startCoords[1]).toEqual(expect.any(Number));
+        expect(startCoords[1] >= 0 && startCoords[1] < BOARD_WIDTH).toEqual(
+            true,
+        );
+
+        // End coordinates valid
+        const endCoords = shipCoordinates[1];
+        expect(endCoords).toEqual(expect.any(Array));
+        expect(endCoords[0]).toEqual(expect.any(Number));
+        expect(endCoords[0] >= 0 && endCoords[0] < BOARD_WIDTH).toEqual(true);
+        expect(endCoords[1]).toEqual(expect.any(Number));
+        expect(endCoords[1] >= 0 && endCoords[1] < BOARD_WIDTH).toEqual(true);
+    });
 });
