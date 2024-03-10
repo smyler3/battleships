@@ -46,12 +46,13 @@ body {
     background-color: #000000;
 }
 
-.focused-board {
+.bottom-board {
+    flex-direction: column;
     flex-wrap: wrap;
 }
 
-.unfocused-board {
-    flex-direction: row-reverse;
+.top-board {
+    flex-direction: column-reverse;
     flex-wrap: wrap-reverse;
 }
 

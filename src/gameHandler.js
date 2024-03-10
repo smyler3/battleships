@@ -40,50 +40,6 @@ const createGameHandler = () => {
             activePlayer = player1;
             activeBoard = player2Board;
 
-            // Place ships player 1
-            // player1Board.placeShip([
-            //     [3, 3],
-            //     [7, 3],
-            // ]);
-            // player1Board.placeShip([
-            //     [3, 4],
-            //     [6, 4],
-            // ]);
-            // player1Board.placeShip([
-            //     [3, 5],
-            //     [5, 5],
-            // ]);
-            // player1Board.placeShip([
-            //     [3, 6],
-            //     [5, 6],
-            // ]);
-            // player1Board.placeShip([
-            //     [3, 7],
-            //     [4, 7],
-            // ]);
-
-            // Place ships player 2
-            // player2Board.placeShip([
-            //     [9, 9],
-            //     [5, 9],
-            // ]);
-            // player2Board.placeShip([
-            //     [9, 8],
-            //     [6, 8],
-            // ]);
-            // player2Board.placeShip([
-            //     [9, 7],
-            //     [7, 7],
-            // ]);
-            // player2Board.placeShip([
-            //     [9, 6],
-            //     [7, 6],
-            // ]);
-            // player2Board.placeShip([
-            //     [9, 5],
-            //     [8, 5],
-            // ]);
-
             boardHandler.renderInitialBoard(
                 player1Board.getGrid(),
                 player2Board.getGrid(),
@@ -110,7 +66,7 @@ const createGameHandler = () => {
                 }
             }
 
-            boardHandler.flipBoards();
+            boardHandler.switchActiveBoard();
             placed = 0;
 
             // Set up player ships
@@ -134,6 +90,8 @@ const createGameHandler = () => {
                     // If coordinates invalid, ask again
                 }
             }
+
+            boardHandler.switchActiveBoard();
         },
 
         // Main game loop
@@ -190,7 +148,6 @@ const createGameHandler = () => {
                 switchActivePlayer();
                 switchActiveBoard();
                 boardHandler.switchActiveBoard();
-                // boardHandler.flipBoards();
             }
         },
     };

@@ -160,24 +160,8 @@ const createDOMBoardHandler = () => {
             activeBoard = player2Board;
 
             // Position player 1's board facing screen
-            player1Board.classList.add("focused-board");
-            player2Board.classList.add("unfocused-board");
-        },
-
-        // Flip the rendered board display
-        flipBoards() {
-            // Flip player 1 board cells
-            player1Board.classList.toggle("focused-board");
-            player1Board.classList.toggle("unfocused-board");
-
-            // Flip player 2 board cells
-            player2Board.classList.toggle("focused-board");
-            player2Board.classList.toggle("unfocused-board");
-
-            this.switchActiveBoard();
-
-            // Switch board positions
-            boardDisplay.prepend(boardDisplay.lastChild);
+            player1Board.classList.add("bottom-board");
+            player2Board.classList.add("top-board");
         },
 
         // Make all possible start positions for ships selectable
@@ -225,6 +209,7 @@ const createDOMBoardHandler = () => {
         placeShip([startX, startY], [endX, endY], hidden) {
             let start = null;
             let end = null;
+            let playerID = hidden ? PLAYER_2_BOARD_ID : PLAYER_1_BOARD_ID;
 
             // Placing ship tiles along the y-axis
             if (startX === endX) {
@@ -233,7 +218,7 @@ const createDOMBoardHandler = () => {
 
                 for (let y = start; y < end + 1; y += 1) {
                     const cell = document.querySelector(
-                        `.grid-cell[data-x="${startX}"][data-y="${y}"]`,
+                        `.grid-cell[data-player-id="${playerID}"][data-x="${startX}"][data-y="${y}"]`,
                     );
 
                     if (!hidden) {
@@ -249,7 +234,7 @@ const createDOMBoardHandler = () => {
 
                 for (let x = start; x < end + 1; x += 1) {
                     const cell = document.querySelector(
-                        `.grid-cell[data-x="${x}"][data-y="${startY}"]`,
+                        `.grid-cell[data-player-id="${playerID}"][data-x="${x}"][data-y="${startY}"]`,
                     );
 
                     if (!hidden) {
