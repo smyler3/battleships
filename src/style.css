@@ -116,6 +116,10 @@ body {
     background-color: red;
 }
 
+.ship-start {
+    background-color: var(--tile-hovered);
+}
+
 /*
  * ------------------------------------------------------------
  * Message Styling

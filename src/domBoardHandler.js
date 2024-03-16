@@ -28,6 +28,12 @@ const createDOMBoardHandler = () => {
         disableCellSelection();
     };
 
+    // Event for selecting the start cell when placing a ship
+    const selectShipStartEvent = (gridCell, resolve) => {
+        gridCell.classList.add("ship-start");
+        selectCellEvent(gridCell, resolve);
+    };
+
     // Create a copy of a player's grid to display relevant game information to the player
     function createGridDisplay(grid, id) {
         const boardHolder = document.createElement("span");
@@ -166,7 +172,7 @@ const createDOMBoardHandler = () => {
                     if (!cell.classList.contains(TILE_CLASSES.SHIP)) {
                         // Make selectable by click
                         cell.addEventListener("click", () =>
-                            selectCellEvent(cell, resolve),
+                            selectShipStartEvent(cell, resolve),
                         );
                         cell.classList.add("clickable");
                     }
