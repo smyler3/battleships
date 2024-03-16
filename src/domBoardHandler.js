@@ -5,6 +5,13 @@ import {
 } from "./constants";
 
 const createDOMBoardHandler = () => {
+    const SHIP_COLOURS = {
+        2: "hsl(320, 60%, 85%)",
+        3: "hsl(30, 60%, 85%)",
+        4: "hsl(270, 60%, 75%)",
+        5: "hsl(120, 60%, 85%)",
+    };
+
     let boardDisplay = null;
     let player1Board = null;
     let player2Board = null;
@@ -18,18 +25,24 @@ const createDOMBoardHandler = () => {
         ];
 
         resolve(cellCoordinates);
-        disableAttackCellSelection();
-    };
-
-    // Event for selecting the start cell when placing a ship
-    const selectShipStartEvent = (gridCell, resolve) => {
-        gridCell.classList.add("ship-start");
-        selectCellEvent(gridCell, resolve);
+        disableCellSelection();
     };
 
     // Create a copy of a player's grid to display relevant game information to the player
     function createGridDisplay(grid, id) {
-        const board = document.createElement("span");
+        const boardHolder = document.createElement("span");
+
+        const title = document.createElement("h3");
+        title.classList.add("board-title");
+        if (id === PLAYER_1_BOARD_ID) {
+            title.classList.add("player-board-title");
+            title.textContent = "Your Ships";
+        } else {
+            title.classList.add("opponent-board-title");
+            title.textContent = "Opponent Ships";
+        }
+
+        const board = document.createElement("div");
         board.id = id;
         board.classList.add("game-board");
 
@@ -47,25 +60,28 @@ const createDOMBoardHandler = () => {
             });
         });
 
-        boardDisplay.prepend(board);
+        boardHolder.appendChild(title);
+        boardHolder.appendChild(board);
+        boardDisplay.prepend(boardHolder);
     }
 
-    // Remove ability to attack cells on opponent's board
-    function disableAttackCellSelection() {
+    // Remove ability to select any cells on the current active board
+    function disableCellSelection() {
         // Clone the parent node to remove all event listeners
-        const clonedBoard = activeBoard.cloneNode(true);
-        boardDisplay.replaceChild(clonedBoard, activeBoard);
+        const clonedBoard = activeBoard.parentElement.cloneNode(true);
+        boardDisplay.replaceChild(clonedBoard, activeBoard.parentElement);
 
         // Update references
         if (activeBoard === player1Board) {
-            player1Board = clonedBoard;
+            player1Board = clonedBoard.childNodes[1];
         } else {
-            player2Board = clonedBoard;
+            player2Board = clonedBoard.childNodes[1];
         }
-        activeBoard = clonedBoard;
+        activeBoard = clonedBoard.childNodes[1];
 
         activeBoard.childNodes.forEach((cell) => {
             cell.classList.remove("clickable");
+            console.log("done");
         });
     }
 
@@ -130,38 +146,17 @@ const createDOMBoardHandler = () => {
         return false;
     }
 
-    // Removes all ship placement indicators from the board for greater clarity
-    function wipeShipPlacementIndicators() {
-        // Remove ship start square indicator
-        document
-            .querySelectorAll(`.grid-cell[class*="ship-start"]`)
-            .forEach((cell) => {
-                cell.classList.remove("ship-start");
-            });
-
-        // Remove potential ship end square indicators
-        document
-            .querySelectorAll(`.grid-cell[class*="potential-ship-end"]`)
-            .forEach((cell) => {
-                cell.classList.remove("potential-ship-end");
-            });
-    }
-
     return {
         // Create and render display of both players boards
         renderInitialBoard(player1Grid, player2Grid) {
             boardDisplay = document.querySelector(".board-display");
 
-            createGridDisplay(player1Grid, PLAYER_1_BOARD_ID);
             createGridDisplay(player2Grid, PLAYER_2_BOARD_ID);
+            createGridDisplay(player1Grid, PLAYER_1_BOARD_ID);
 
             player1Board = document.querySelector(`#${PLAYER_1_BOARD_ID}`);
             player2Board = document.querySelector(`#${PLAYER_2_BOARD_ID}`);
             activeBoard = player2Board;
-
-            // Position player 1's board facing screen
-            player1Board.classList.add("bottom-board");
-            player2Board.classList.add("top-board");
         },
 
         // Make all possible start positions for ships selectable
@@ -171,7 +166,7 @@ const createDOMBoardHandler = () => {
                     if (!cell.classList.contains(TILE_CLASSES.SHIP)) {
                         // Make selectable by click
                         cell.addEventListener("click", () =>
-                            selectShipStartEvent(cell, resolve),
+                            selectCellEvent(cell, resolve),
                         );
                         cell.classList.add("clickable");
                     }
@@ -198,7 +193,6 @@ const createDOMBoardHandler = () => {
                         cell.addEventListener("click", () =>
                             selectCellEvent(cell, resolve),
                         );
-                        cell.classList.add("potential-ship-end");
                         cell.classList.add("clickable");
                     }
                 });
@@ -209,12 +203,14 @@ const createDOMBoardHandler = () => {
         placeShip([startX, startY], [endX, endY], hidden) {
             let start = null;
             let end = null;
+            let colour = null;
             let playerID = hidden ? PLAYER_2_BOARD_ID : PLAYER_1_BOARD_ID;
 
             // Placing ship tiles along the y-axis
             if (startX === endX) {
                 start = Math.min(startY, endY);
                 end = Math.max(startY, endY);
+                colour = SHIP_COLOURS[end - start + 1];
 
                 for (let y = start; y < end + 1; y += 1) {
                     const cell = document.querySelector(
@@ -224,6 +220,7 @@ const createDOMBoardHandler = () => {
                     if (!hidden) {
                         cell.classList.add(TILE_CLASSES.SHIP);
                         cell.classList.remove(TILE_CLASSES.WATER);
+                        cell.style.backgroundColor = colour;
                     }
                 }
             }
@@ -231,6 +228,7 @@ const createDOMBoardHandler = () => {
             else {
                 start = Math.min(startX, endX);
                 end = Math.max(startX, endX);
+                colour = SHIP_COLOURS[end - start + 1];
 
                 for (let x = start; x < end + 1; x += 1) {
                     const cell = document.querySelector(
@@ -240,11 +238,10 @@ const createDOMBoardHandler = () => {
                     if (!hidden) {
                         cell.classList.add(TILE_CLASSES.SHIP);
                         cell.classList.remove(TILE_CLASSES.WATER);
+                        cell.style.backgroundColor = colour;
                     }
                 }
             }
-
-            wipeShipPlacementIndicators();
         },
 
         // Make all attackable cells on opponent's board selectable for attacks
@@ -273,6 +270,9 @@ const createDOMBoardHandler = () => {
                 `.grid-cell[data-x="${x}"][data-y="${y}"][data-player-id="${activeBoard.id}"]`,
             );
 
+            // Remove any earlier styling
+            attackedCell.style.backgroundColor = "";
+
             attackedCell.classList.remove(TILE_CLASSES.WATER);
             attackedCell.classList.remove("clickable");
             attackedCell.classList.add(
@@ -282,8 +282,14 @@ const createDOMBoardHandler = () => {
 
         // Change which board is active
         switchActiveBoard() {
+            activeBoard.parentElement.childNodes[0].classList.remove(
+                "board-title-active",
+            );
             activeBoard =
                 activeBoard === player1Board ? player2Board : player1Board;
+            activeBoard.parentElement.childNodes[0].classList.add(
+                "board-title-active",
+            );
         },
     };
 };

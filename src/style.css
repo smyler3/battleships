@@ -1,9 +1,15 @@
 :root {
     --grid-cell-gap: 1px;
     --grid-padding: 2px;
-    --grid-cell-size: 2rem;
+    --grid-cell-size: 3rem;
 
     --banner-background: #00000099;
+
+    --board-title-background: rgb(2, 110, 110);
+
+    --tile-active: rgb(0, 253, 253);
+    --tile-inactive: rgb(0, 199, 199);
+    --tile-hovered: rgb(0, 183, 255);
 }
 
 /*
@@ -22,20 +28,45 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+
+    background-color: #b9b9b9;
 }
 
 .board-display {
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: 2rem;
 
     background-color: #000000;
+    box-shadow: 2px 10px 15px #000025;
+}
+
+/*
+ * ------------------------------------------------------------
+ * Board Styling
+ * ------------------------------------------------------------
+ */
+.board-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 1rem 2rem;
+    margin: 1px;
+
+    color: #000000;
+    background-color: var(--board-title-background);
+}
+
+.board-title-active {
+    color: #ffffff;
 }
 
 .game-board {
     display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
     gap: var(--grid-cell-gap);
 
     width: calc(calc(10 * var(--grid-cell-size)) + calc(var(--grid-padding) * 2) + calc(var(--grid-cell-gap) * 9));
@@ -46,16 +77,11 @@ body {
     background-color: #000000;
 }
 
-.bottom-board {
-    flex-direction: column;
-    flex-wrap: wrap;
-}
-
-.top-board {
-    flex-direction: column-reverse;
-    flex-wrap: wrap-reverse;
-}
-
+/*
+ * ------------------------------------------------------------
+ * Cell Styling
+ * ------------------------------------------------------------
+ */
 .grid-cell {
     display: flex;
     align-items: center;
@@ -65,19 +91,21 @@ body {
     height: var(--grid-cell-size);
 }
 
-.clickable {
-    cursor: pointer;
-}
-.clickable:hover {
-    background-color: rgb(0, 183, 255);
+.water-cell {
+    background-color: var(--tile-inactive);
 }
 
-.water-cell {
-    background-color: aqua;
+.clickable {
+    cursor: pointer;
+
+    background-color: var(--tile-active);
+}
+.clickable:hover {
+    background-color: var(--tile-hovered);
 }
 
 .ship-cell {
-    background-color: grey;
+    background-color: rgb(197, 197, 197);
 }
 
 .miss-cell {
@@ -88,14 +116,11 @@ body {
     background-color: red;
 }
 
-.ship-start {
-    background-color: greenyellow;
-}
-
-.potential-ship-end {
-    background-color: green;
-}
-
+/*
+ * ------------------------------------------------------------
+ * Message Styling
+ * ------------------------------------------------------------
+ */
 .message-banner {
     display: flex;
     align-items: center;
